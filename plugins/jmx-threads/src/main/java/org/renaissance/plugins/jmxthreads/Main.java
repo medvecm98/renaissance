@@ -16,7 +16,8 @@ public class Main implements Plugin,
   long __compilationTimeAfter;
 
   int __threadCount;
-  long cpuTimeBefore, cpuTimeAfter, userTimeBefore, userTimeAfter, deadlockedCount, waitingAfter, waitingBefore, waitingMax, waitMaxThread;
+  long cpuTimeBefore, cpuTimeAfter, userTimeBefore, userTimeAfter;
+  long deadlockedCount, waitingAfter, waitingBefore, waitingMax;
 
   public Main() {
     __threadMXBean = ManagementFactory.getThreadMXBean();
@@ -62,7 +63,6 @@ public class Main implements Plugin,
       waitTime = __threadMXBean.getThreadInfo(thread).getWaitedTime();
       if (waitTime > waitingMax) {
         waitingMax = waitTime;
-        waitMaxThread = thread;
       }
     }
   }
@@ -101,13 +101,15 @@ public class Main implements Plugin,
   public void onMeasurementResultsRequested(String benchmark, int opIndex, Plugin.MeasurementResultListener dispatcher) {
     dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_count", __threadCount);
     dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_deadlcoked", deadlockedCount);
-    dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_kernel_time", (cpuTimeAfter - userTimeAfter) - (cpuTimeBefore - userTimeBefore));
-    dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_kernel_time_total", (cpuTimeAfter - userTimeAfter));
-    dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_user_time", userTimeAfter - userTimeBefore);
-    dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_user_time_total", userTimeAfter);
-    dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_waiting", waitingAfter - waitingBefore);
-    dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_waiting_total", waitingAfter);
-    dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_waiting_max_total", waitingMax);
-    dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_waiting_max_thread_total", waitMaxThread);
+
+    dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_kernel_time_ns", (cpuTimeAfter - userTimeAfter) - (cpuTimeBefore - userTimeBefore));
+    dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_kernel_time_ns_total", (cpuTimeAfter - userTimeAfter));
+
+    dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_user_time_ns", userTimeAfter - userTimeBefore);
+    dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_user_time_ns_total", userTimeAfter);
+    
+    dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_waiting_ms", waitingAfter - waitingBefore);
+    dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_waiting_ms_total", waitingAfter);
+    dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_waiting_ms_max_total", waitingMax);
   }
 }
