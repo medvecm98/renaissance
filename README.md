@@ -25,7 +25,7 @@ To run a Renaissance benchmark, you need to have a JRE version 11 (or later)
 installed and execute the following `java` command:
 
 ```
-$ java -jar 'renaissance-gpl-0.17.1.2m.jar' <benchmarks>
+$ java -jar 'renaissance-gpl-0.17.1.3m.jar' <benchmarks>
 ```
 
 In the above command, `<benchmarks>` is the list of benchmarks that you want to run.
@@ -268,7 +268,7 @@ arguments to that plugin (or policy).
 The following is a complete list of command-line options.
 
 ```
-Renaissance Benchmark Suite, version 0.17.1.2m
+Renaissance Benchmark Suite, version 0.17.1.3m
 Usage: renaissance [options] [benchmark-specification]
 
   -h, --help               Prints this usage text.
@@ -315,7 +315,7 @@ $ tools/sbt/bin/sbt renaissanceJmhPackage
 To run the benchmarks using JMH, you can execute the following `java` command:
 
 ```
-$ java -jar 'renaissance-jmh/target/renaissance-jmh-0.17.1.2m.jar'
+$ java -jar 'renaissance-jmh/target/renaissance-jmh-0.17.1.3m.jar'
 ```
 
 
