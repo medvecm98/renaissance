@@ -2,7 +2,7 @@ lazy val renaissanceCore = RootProject(uri("../../renaissance-core"))
 
 lazy val pluginUbenchAgent = (project in file("."))
   .settings(
-    name := "plugin-ubenchagent",
+    name := "plugin-cache-uba",
     version := "0.0.1",
     crossPaths := false,
     autoScalaLibrary := false,
@@ -15,7 +15,7 @@ lazy val pluginUbenchAgent = (project in file("."))
     },
     javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
     packageOptions += sbt.Package.ManifestAttributes(
-      ("Renaissance-Plugin", "org.renaissance.plugins.ubenchagent.Main")
+      ("Renaissance-Plugin", "org.renaissance.plugins.caches.uba.Main")
     ),
   )
   .dependsOn(renaissanceCore % "provided")

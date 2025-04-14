@@ -1,4 +1,4 @@
-package org.renaissance.plugins.ubenchagent;
+package org.renaissance.plugins.caches.uba;
 
 import org.renaissance.Plugin;
 
@@ -18,10 +18,8 @@ public class Main implements Plugin,
   final int eventSet;
 
   public Main(String[] args) {
-    String[] events = Arrays.stream(args)
-        .flatMap(a -> Arrays.stream(a.split(",")))
-        .collect(Collectors.toList())
-        .toArray(new String[0]);
+    String[] events = new String[]{"PAPI_L1_DCM", "PAPI_L2_DCM", "PAPI_OFFCORE_RESPONSE_1:SNP_HIT_WITH_FWD"};
+
     if (events.length == 0) {
       warn("No events specified, are you sure about this?");
       eventSet = -1;
@@ -70,4 +68,3 @@ public class Main implements Plugin,
     System.out.printf("[ubench plugin] WARNING: " + msg + "\n", args);
   }
 }
-
