@@ -17,13 +17,12 @@ public class Main implements Plugin,
 
   int __threadCount;
   long cpuTimeBefore, cpuTimeAfter, userTimeBefore, userTimeAfter;
-  long deadlockedCount, waitingAfter, waitingBefore, waitingMax;
+  long deadlockedCount, waitingAfter, waitingBefore;
 
   public Main() {
     __threadMXBean = ManagementFactory.getThreadMXBean();
     __threadMXBean.setThreadContentionMonitoringEnabled(true);
     __threadMXBean.setThreadCpuTimeEnabled(true);
-    waitingMax = Long.MIN_VALUE;
   }
 
   private long iterativeMeanCpu(long[] threadIds) {
@@ -56,17 +55,6 @@ public class Main implements Plugin,
     return avg;
   }
 
-  private void iterativeMaxWaiting(long[] threadIds) {
-    long waitTime = 0;
-
-    for (long thread : threadIds) {
-      waitTime = __threadMXBean.getThreadInfo(thread).getWaitedTime();
-      if (waitTime > waitingMax) {
-        waitingMax = waitTime;
-      }
-    }
-  }
-
   @Override
   public void afterOperationSetUp(String benchmark, int opIndex, boolean isLastOp) {
     // cpu time
@@ -92,9 +80,6 @@ public class Main implements Plugin,
 
     // waiting average
     waitingAfter = iterativeMeanWaiting(__threadMXBean.getAllThreadIds());
-
-    // waiting max
-    iterativeMaxWaiting(__threadMXBean.getAllThreadIds());
   }
 
   @Override
@@ -110,6 +95,5 @@ public class Main implements Plugin,
     
     dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_waiting_ms", waitingAfter - waitingBefore);
     dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_waiting_ms_total", waitingAfter);
-    dispatcher.onMeasurementResult(benchmark, "jmx_threads_thread_waiting_ms_max_total", waitingMax);
   }
 }
